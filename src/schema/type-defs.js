@@ -18,6 +18,14 @@ const typeDefs = gql`
     isInTheaters: Boolean!
   }
 
+  enum Nationality {
+    CANADA
+    BRAZIL
+    INDIA
+    GERMANY
+    CHILE
+  }
+
   type Query {
     users: [User!]!
     user(id: ID!): User
@@ -25,12 +33,22 @@ const typeDefs = gql`
     movie(name: String!): Movie
   }
 
-  enum Nationality {
-    CANADA
-    BRAZIL
-    INDIA
-    GERMANY
-    CHILE
+  input CreateUserInput {
+    name: String!
+    username: String!
+    age: Int!
+    nationality: Nationality = BRAZIL
+  }
+
+  input UpdateUsernameInput {
+    id: ID!
+    newUsername: String!
+  }
+
+  type Mutation {
+    createUser(input: CreateUserInput!): User!
+    updateUsername(input: UpdateUsernameInput!): User
+    deleteUser(id: ID!): User
   }
 `;
 

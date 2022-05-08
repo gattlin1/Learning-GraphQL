@@ -7,17 +7,13 @@ const resolvers = {
     },
     user: (_, args) => {
       const id = Number(args.id);
-      for (const user of UserList) {
-        if (user.id === id) return user;
-      }
+      return UserList.find((user) => user.id === id);
     },
     movies: () => {
       return MovieList;
     },
     movie: (_, args) => {
-      for (const movie of MovieList) {
-        if (movie.name === args.name) return movie;
-      }
+      return MovieList.find((movie) => movie.name === args.name);
     },
   },
 
@@ -27,6 +23,36 @@ const resolvers = {
         (movie) =>
           movie.yearOfPublication >= 2000 && movie.yearOfPublication <= 2010
       );
+    },
+  },
+
+  Mutation: {
+    createUser: (_, args) => {
+      const user = args.input;
+      const newId = UserList[UserList.length - 1].id + 1;
+      user.id = newId;
+
+      UserList.push(user);
+      return user;
+    },
+    updateUsername: (_, args) => {
+      const id = Number(args.input.id);
+      const newUsername = args.input.newUsername;
+      const updatedUser = UserList.find((user) => user.id === id);
+      if (updatedUser) {
+        updatedUser.username = newUsername;
+      }
+
+      return updatedUser;
+    },
+    deleteUser: (_, args) => {
+      const id = Number(args.id);
+      const userIndexToBeDeleted = UserList.findIndex((user) => user.id === id);
+      if (userIndexToBeDeleted !== -1) {
+        UserList.splice(userIndexToBeDeleted, 1);
+      }
+
+      return null;
     },
   },
 };
