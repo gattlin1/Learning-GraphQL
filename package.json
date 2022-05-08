@@ -1,0 +1,11 @@
+{
+  "name": "learning-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Gattlin Walker",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.7.0",
+    "graphql": "^16.4.0"
+  }
+}
