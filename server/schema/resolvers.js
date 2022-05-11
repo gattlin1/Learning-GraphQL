@@ -3,7 +3,8 @@ const { UserList, MovieList } = require('../FakeData');
 const resolvers = {
   Query: {
     users: () => {
-      return UserList;
+      if (UserList) return { users: UserList };
+      else return { message: 'Error getting all users' };
     },
     user: (_, args) => {
       const id = Number(args.id);
@@ -52,6 +53,13 @@ const resolvers = {
         UserList.splice(userIndexToBeDeleted, 1);
       }
 
+      return null;
+    },
+  },
+  UsersResult: {
+    __resolveType: (obj) => {
+      if (obj.users) return 'UsersSuccessfulResult';
+      if (obj.message) return 'UsersErrorResult';
       return null;
     },
   },

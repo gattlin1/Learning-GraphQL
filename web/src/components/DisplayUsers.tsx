@@ -1,14 +1,21 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 
+const GetAgeAndName = gql`
+  fragment GetAgeAndName on User {
+    name
+    age
+  }
+`;
+
 const QUERY_ALL_USERS = gql`
+  ${GetAgeAndName}
   query GetAllUsers {
     users {
       id
-      name
       username
-      age
       nationality
+      ...GetAgeAndName
     }
   }
 `;
@@ -24,7 +31,7 @@ const CREATE_USER = gql`
 
 function DisplayUsers() {
   const { data, loading, refetch } = useQuery(QUERY_ALL_USERS);
-  const [createUser, { data: createUserData }] = useMutation(CREATE_USER);
+  const [createUser] = useMutation(CREATE_USER);
 
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
